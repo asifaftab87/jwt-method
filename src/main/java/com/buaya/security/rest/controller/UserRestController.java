@@ -3,16 +3,15 @@ package com.buaya.security.rest.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,10 +56,21 @@ public class UserRestController {
 		List<UserDTO> userDTOList = new ArrayList<UserDTO>();	
 		
 		for(User user : userService.getAllUser()) {
-			if(!user.getEmail().equals(principal.getName())) {
-				UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
-				userDTOList.add(userDTO);
-			}
+			UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
+			userDTOList.add(userDTO);
+		}
+		
+		return userDTOList;	
+	}
+	
+	@GetMapping(value="/get/all/except/login")
+	public List<UserDTO> findAllUsersExceptGivenEmail(Principal principal) {	
+		
+		List<UserDTO> userDTOList = new ArrayList<UserDTO>();	
+		
+		for(User user : userService.findAllUsersExceptGivenEmail(principal.getName())) {
+			UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
+			userDTOList.add(userDTO);
 		}
 		
 		return userDTOList;	

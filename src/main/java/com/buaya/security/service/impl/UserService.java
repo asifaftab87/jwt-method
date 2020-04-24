@@ -1,5 +1,6 @@
 package com.buaya.security.service.impl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,5 +32,9 @@ public class UserService {
 			return user.get();
 		}
 		return null;
+	}
+	
+	public Collection<User> findAllUsersExceptGivenEmail(String email){
+		return userRepository.findAllUsersExceptGivenEmail(email);
 	}
 }
