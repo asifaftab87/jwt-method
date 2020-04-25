@@ -57,6 +57,14 @@ public class CustomUserDetailsService implements UserDetailsService{
         return userRepository.save(user);
     }
 	
+	public User saveUser(User user, String roleName) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setActive(true);
+        Role role = roleRepository.findByRole(roleName);
+        user.setRoles(new HashSet<>(Arrays.asList(role)));
+        return userRepository.save(user);
+    }
+	
 	public User findByEmail(String email) {
 		
 		Optional<User> user = userRepository.findByEmail(email);

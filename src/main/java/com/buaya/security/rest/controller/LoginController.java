@@ -26,7 +26,7 @@ public class LoginController {
 			throw new Exception(user.getEmail() + "User already exists");
 		}
 		
-		user2 = userService.addUser(user, "ROLE_USER");
+		user2 = userService.saveUser(user, "ROLE_USER");
         return user2;
 	}
 }
