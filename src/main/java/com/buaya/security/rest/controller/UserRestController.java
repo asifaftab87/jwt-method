@@ -12,9 +12,9 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buaya.security.dto.UserDTO;
@@ -39,9 +39,10 @@ public class UserRestController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "/admin/add/user", method = RequestMethod.POST)
-	public void add(@RequestBody User user, HttpServletRequest request) {
-		customUserDetailsService.addUser(user, "USER");
+	@PostMapping(value = "/admin/add/user")
+	public void add(@RequestBody UserDTO userDTO, HttpServletRequest request) {
+		
+		customUserDetailsService.addUser(dozerBeanMapper.map(userDTO, User.class), "USER");
 	}
 	
 	
@@ -51,7 +52,7 @@ public class UserRestController {
 	@GetMapping(value="/get/all")
 	public List<UserDTO> findAllUser(Principal principal) {	
 		
-		List<UserDTO> userDTOList = new ArrayList<UserDTO>();	
+		List<UserDTO> userDTOList = new ArrayList<>();	
 		
 		for(User user : userService.getAllUser()) {
 			UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
@@ -67,7 +68,7 @@ public class UserRestController {
 	@GetMapping(value="/get/all/except/login")
 	public List<UserDTO> findAllUsersExceptGivenEmail(Principal principal) {	
 		
-		List<UserDTO> userDTOList = new ArrayList<UserDTO>();	
+		List<UserDTO> userDTOList = new ArrayList<>();	
 		
 		for(User user : userService.findAllUsersExceptGivenEmail(principal.getName())) {
 			UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
@@ -90,8 +91,7 @@ public class UserRestController {
 		user.setRoles(new HashSet<>(Arrays.asList(role)));
 		userService.update(user);
 		
-		UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
-		return userDTO;
+		return dozerBeanMapper.map(user, UserDTO.class);
 	}
 
 	/*
@@ -107,8 +107,7 @@ public class UserRestController {
 		user.setRoles(new HashSet<>(Arrays.asList(role)));
 		userService.update(user);
 		
-		UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
-		return userDTO;
+		return dozerBeanMapper.map(user, UserDTO.class);
 	}
 	
 }
