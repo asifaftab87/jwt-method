@@ -3,8 +3,6 @@ package com.buaya.security.rest.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class UserRestController {
 	
 	
 	/*
-	 * This will return all users except login user
+	 * This will return all users
 	 */
 	@GetMapping(value="/get/all")
 	public List<UserDTO> findAllUser(Principal principal) {	
@@ -63,6 +61,9 @@ public class UserRestController {
 		return userDTOList;	
 	}
 	
+	/*
+	 * This will return all users except login user
+	 */
 	@GetMapping(value="/get/all/except/login")
 	public List<UserDTO> findAllUsersExceptGivenEmail(Principal principal) {	
 		
@@ -93,6 +94,23 @@ public class UserRestController {
 		return userDTO;
 	}
 
+	/*
+	 * To update user role we have to pass user userid and rolename
+	 * this rolename should be the 
+	 */
+	@GetMapping(value = "/update/role/id/{id}/roleName/{roleName}")
+	public UserDTO updateRoleById(@PathVariable int id, @PathVariable String roleName) {
+		
+		User user = userService.findById(id);
+		Role role = roleService.findByRole(roleName);
+		
+		user.setRoles(new HashSet<>(Arrays.asList(role)));
+		userService.update(user);
+		
+		UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
+		return userDTO;
+	}
+	
 }
 
 

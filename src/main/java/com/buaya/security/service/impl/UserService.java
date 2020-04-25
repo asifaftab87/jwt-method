@@ -25,7 +25,7 @@ public class UserService {
 	}
 
 	public User findByEmail(String email) {
-
+		
 		Optional<User> user = userRepository.findByEmail(email);
 		
 		if (user.isPresent()) {
@@ -37,4 +37,16 @@ public class UserService {
 	public Collection<User> findAllUsersExceptGivenEmail(String email){
 		return userRepository.findAllUsersExceptGivenEmail(email);
 	}
+	
+	public User findById(int id) {
+		
+		Optional<User> optional = userRepository.findById(id);
+		
+		if(optional.isPresent()) {
+			return optional.get();
+		}
+		
+		return null;
+	}
+	
 }
