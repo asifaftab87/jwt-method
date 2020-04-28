@@ -17,6 +17,7 @@ public class UserDTO implements Serializable{
 	private String contactNum;
 	private Date dob;
 	private int status;
+	private String passwordGame;
 	private Set<RoleDTO> roles;
 	
 	public UserDTO() {}
@@ -75,6 +76,14 @@ public class UserDTO implements Serializable{
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public String getPasswordGame() {
+		return passwordGame;
+	}
+
+	public void setPasswordGame(String passwordGame) {
+		this.passwordGame = passwordGame;
+	}
+
 	public Set<RoleDTO> getRoles() {
 		return roles;
 	}

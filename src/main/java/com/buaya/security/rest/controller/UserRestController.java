@@ -110,6 +110,17 @@ public class UserRestController {
 		return dozerBeanMapper.map(user, UserDTO.class);
 	}
 	
+	/*
+	 * Get user by user id
+	 */
+	@GetMapping(value = "/find/id/{id}")
+	public UserDTO findUserById(@PathVariable int id) {
+		
+		User user = userService.findById(id);
+		return dozerBeanMapper.map(user, UserDTO.class);
+	}
+	
+	
 }
 
 
