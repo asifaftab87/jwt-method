@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "user")
@@ -56,6 +57,9 @@ public class User implements Serializable{
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+	
+	@Transient
+	private  Handicap handicap;
 	
 	public User() {}
 	
@@ -132,6 +136,14 @@ public class User implements Serializable{
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public Handicap getHandicap() {
+		return handicap;
+	}
+
+	public void setHandicap(Handicap handicap) {
+		this.handicap = handicap;
 	}
 
 	@Override

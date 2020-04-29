@@ -19,6 +19,7 @@ public class UserDTO implements Serializable{
 	private int status;
 	private String passwordGame;
 	private Set<RoleDTO> roles;
+	private HandicapDTO handicapDTO;
 	
 	public UserDTO() {}
 	
@@ -90,4 +91,14 @@ public class UserDTO implements Serializable{
 	public void setRoles(Set<RoleDTO> roles) {
 		this.roles = roles;
 	}
+
+	public HandicapDTO getHandicapDTO() {
+		return handicapDTO;
+	}
+
+	public void setHandicapDTO(HandicapDTO handicapDTO) {
+		this.handicapDTO = handicapDTO;
+	}
+	
+	
 }

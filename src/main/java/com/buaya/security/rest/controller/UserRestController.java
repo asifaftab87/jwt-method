@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.buaya.security.dto.HandicapDTO;
 import com.buaya.security.dto.UserDTO;
 import com.buaya.security.model.Role;
 import com.buaya.security.model.User;
 import com.buaya.security.service.CustomUserDetailsService;
+import com.buaya.security.service.impl.HandicapService;
 import com.buaya.security.service.impl.RoleService;
 import com.buaya.security.service.impl.UserService;
 
@@ -31,7 +33,8 @@ public class UserRestController {
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 	
-	private DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
+	@Autowired
+	private DozerBeanMapper dozerBeanMapper;
 	
 	@Autowired
 	private RoleService roleService;
@@ -39,10 +42,39 @@ public class UserRestController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private HandicapService handicapService;
+	
 	@PostMapping(value = "/admin/add/user")
 	public void add(@RequestBody UserDTO userDTO, HttpServletRequest request) {
 		
 		customUserDetailsService.addUser(dozerBeanMapper.map(userDTO, User.class), "USER");
+	}
+	
+	
+	@PostMapping(value = "/admin/add/player")
+	public UserDTO addPlayer(@RequestBody UserDTO userDTO, HttpServletRequest request) {
+		
+		HandicapDTO handicapDTO = userDTO.getHandicapDTO();
+		
+		User user = dozerBeanMapper.map(userDTO, User.class);
+		user.setPassword(userDTO.getPasswordGame());
+		user = userService.addUser(user, "USER");
+		
+
+		if(user!=null) {
+			
+			userDTO = dozerBeanMapper.map(user, UserDTO.class);
+			
+			handicapDTO.setUserId(user.getId());
+			handicapDTO = handicapService.add(handicapDTO);
+			
+			if(handicapDTO!=null) {
+				userDTO.setHandicapDTO(handicapDTO);
+			}
+		}
+		
+		return userDTO;
 	}
 	
 	
