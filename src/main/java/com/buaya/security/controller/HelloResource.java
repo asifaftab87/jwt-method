@@ -9,9 +9,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buaya.security.request.model.AuthenticationRequest;
@@ -72,10 +72,8 @@ public class HelloResource {
 	}
 	*/
 	
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@PostMapping(value = "/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest req) throws Exception {
-		
-		log.info("username: "+req.getUsername()+"       password: "+req.getPassword());
 		
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
@@ -87,16 +85,9 @@ public class HelloResource {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(req.getUsername());
 		
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
-		log.info("jwt: "+jwt);
+		
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 		
-	}
-	
-	@RequestMapping("/checkToken")
-	public ResponseEntity<?> checkToken() {
-		log.info("---------------------------------------------------   checkToken  -----------------------------------------------");
-		final String result = "true";
-		return ResponseEntity.ok(new AuthenticationResponse(result));
 	}
 	
 }
