@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.buaya.security.dto.HandicapDTO;
 import com.buaya.security.dto.UserDTO;
+import com.buaya.security.model.Handicap;
 import com.buaya.security.model.Role;
 import com.buaya.security.model.User;
 import com.buaya.security.service.CustomUserDetailsService;
@@ -148,7 +149,13 @@ public class UserRestController {
 		User user = userService.findById(id);
 		UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
 		userDTO.setFullName(user.getFirstName()+" "+user.getLastName());
-		userDTO.setHandicapDTO(dozerBeanMapper.map(user.getHandicap(), HandicapDTO.class));
+		
+		Handicap handicap = user.getHandicap();
+		
+		if(handicap!=null) {
+			userDTO.setHandicapDTO(dozerBeanMapper.map(handicap, HandicapDTO.class));
+		}
+		
 		return userDTO;
 	}
 	
