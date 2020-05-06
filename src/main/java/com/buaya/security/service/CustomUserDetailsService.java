@@ -51,7 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 	
 	public User addUser(User user, String roleName) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(true);
+        //user.setActive(true);
         Role role = roleRepository.findByRole(roleName);
         user.setRoles(new HashSet<>(Arrays.asList(role)));
         return userRepository.save(user);

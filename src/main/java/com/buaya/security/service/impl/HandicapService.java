@@ -43,6 +43,11 @@ public class HandicapService {
 		return dozerBeanMapper.map(handicapRepository.save(handicap), HandicapDTO.class);
 	}
 	
+	public Handicap add(Handicap handicap) {
+		
+		return handicapRepository.save(handicap);
+	}
+	
 	public Handicap findByUserId(int userId) {
 		
 		Optional<Handicap> optional = handicapRepository.findByUserId(userId);

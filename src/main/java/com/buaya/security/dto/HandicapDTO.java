@@ -6,18 +6,18 @@ public class HandicapDTO implements Serializable{
 	
 	private static final long serialVersionUID = 2077720922426795075L;
 
-	private int id;
+	private long id;
 	
 	private int userId;
 	
-	private String handicapValue;
+	private long handicapValue;
 	
 	public HandicapDTO() {}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -29,11 +29,11 @@ public class HandicapDTO implements Serializable{
 		this.userId = userId;
 	}
 
-	public String getHandicapValue() {
+	public long getHandicapValue() {
 		return handicapValue;
 	}
 
-	public void setHandicapValue(String handicapValue) {
+	public void setHandicapValue(long handicapValue) {
 		this.handicapValue = handicapValue;
 	}
 

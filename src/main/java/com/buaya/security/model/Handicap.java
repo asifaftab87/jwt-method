@@ -23,7 +23,7 @@ public class Handicap implements Serializable{
 	private int userId;
 	
 	@Column(name="handicap_value")
-	private String handicapValue;
+	private long handicapValue;
 	
 	public Handicap() {}
 	
@@ -42,11 +42,11 @@ public class Handicap implements Serializable{
 		this.userId = userId;
 	}
 
-	public String getHandicapValue() {
+	public long getHandicapValue() {
 		return handicapValue;
 	}
 
-	public void setHandicapValue(String handicapValue) {
+	public void setHandicapValue(long handicapValue) {
 		this.handicapValue = handicapValue;
 	}
 

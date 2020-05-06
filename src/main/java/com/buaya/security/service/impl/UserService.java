@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.buaya.security.dto.HandicapDTO;
+import com.buaya.security.dto.UserDTO;
 import com.buaya.security.model.Handicap;
 import com.buaya.security.model.Role;
 import com.buaya.security.model.User;
 import com.buaya.security.repository.RoleRepository;
 import com.buaya.security.repository.UserRepository;
+import com.buaya.security.service.CustomUserDetailsService;
 
 @Service
 public class UserService {
@@ -35,12 +38,49 @@ public class UserService {
 	@Autowired
 	private RoleService roleService;
 	
-	public User addUser(User user, String roleName) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+	
+	@Autowired
+	private DozerBeanMapper dozerBeanMapper;
+	
+	public User addUser(UserDTO userDTO, String roleName) {
+		
+		User user = dozerBeanMapper.map(userDTO, User.class);
+		user.setPassword(userDTO.getPasswordUser());
+		
+		HandicapDTO handicapDTO = userDTO.getHandicapDTO();
+		Handicap handicap = new Handicap();
+		
+		if(handicapDTO!=null) {
+			handicap = dozerBeanMapper.map(handicapDTO, Handicap.class);
+		}
+		
+		String fullName = userDTO.getFullName();
+		
+		int index = fullName.lastIndexOf(' ');
+		String lastName = fullName.substring(index + 1);
+		
+		
+		if(lastName.equalsIgnoreCase(user.getLastName())) {
+			user.setFirstName(fullName.substring(0, index));
+		}
+		else {
+			user.setFirstName(fullName);
+		}
+		user = customUserDetailsService.addUser(user, roleName);
+		
+		handicap.setUserId(user.getId());
+		handicap = handicapService.add(handicap);
+		user.setHandicap(handicap);
+		/*		
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(true);
         Role role = roleRepository.findByRole(roleName);
         user.setRoles(new HashSet<>(Arrays.asList(role)));
-        return userRepository.save(user);
+        */
+		
+		return user;
     }
 	
 	public User update(User user) {

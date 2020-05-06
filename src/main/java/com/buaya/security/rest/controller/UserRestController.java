@@ -22,7 +22,6 @@ import com.buaya.security.dto.UserDTO;
 import com.buaya.security.model.Handicap;
 import com.buaya.security.model.Role;
 import com.buaya.security.model.User;
-import com.buaya.security.service.CustomUserDetailsService;
 import com.buaya.security.service.impl.HandicapService;
 import com.buaya.security.service.impl.RoleService;
 import com.buaya.security.service.impl.UserService;
@@ -30,9 +29,6 @@ import com.buaya.security.service.impl.UserService;
 @RestController
 @RequestMapping(value = "/user")
 public class UserRestController {
-
-	@Autowired
-	private CustomUserDetailsService customUserDetailsService;
 	
 	@Autowired
 	private DozerBeanMapper dozerBeanMapper;
@@ -49,10 +45,15 @@ public class UserRestController {
 	@PostMapping(value = "/admin/add/user")
 	public void add(@RequestBody UserDTO userDTO, HttpServletRequest request) {
 		
-		customUserDetailsService.addUser(dozerBeanMapper.map(userDTO, User.class), "USER");
+		userService.addUser(userDTO, "USER");
+		
+		//customUserDetailsService.addUser(dozerBeanMapper.map(userDTO, User.class), "USER");
 	}
 	
-	
+	/*
+	 * Please don't use this service 
+	 * if u require inform me I will create new one
+	 */
 	@PostMapping(value = "/admin/add/player")
 	public UserDTO addPlayer(@RequestBody UserDTO userDTO, HttpServletRequest request) {
 		
@@ -60,7 +61,7 @@ public class UserRestController {
 		
 		User user = dozerBeanMapper.map(userDTO, User.class);
 		user.setPassword(userDTO.getPasswordGame());
-		user = userService.addUser(user, "USER");
+		//user = userService.addUser(user, "USER");
 		
 
 		if(user!=null) {
