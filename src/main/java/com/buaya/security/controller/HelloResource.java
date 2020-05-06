@@ -19,7 +19,8 @@ import com.buaya.security.response.model.AuthenticationResponse;
 import com.buaya.security.service.CustomUserDetailsService;
 import com.buaya.security.util.JwtUtil;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://buaya.skali.my")
 @RestController
 public class HelloResource {
 

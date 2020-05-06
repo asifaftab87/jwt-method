@@ -11,6 +11,7 @@ public class UserDTO implements Serializable{
 	private int id;
 	private boolean active;
 	private String email;
+	private String fullName;
 	private String firstName;
 	private String lastName;
 	private String membershipNum;
@@ -41,6 +42,14 @@ public class UserDTO implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

@@ -61,12 +61,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             	.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
 			.and()
 				.authorizeRequests().antMatchers("/authenticate").permitAll()
-			.and()
+	/*		.and()
 				.authorizeRequests().antMatchers("/employees").permitAll()
 			.and()
 				.authorizeRequests().antMatchers("/employees/delete/**").permitAll()
 			.and()
-				.authorizeRequests().antMatchers("/employees/add").permitAll()
+				.authorizeRequests().antMatchers("/employees/add").permitAll() */
 			.and()
 				.authorizeRequests().anyRequest().authenticated();
 	

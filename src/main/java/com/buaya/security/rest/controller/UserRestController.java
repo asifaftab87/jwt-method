@@ -133,13 +133,10 @@ public class UserRestController {
 	@GetMapping(value = "/update/role/id/{id}/roleName/{roleName}")
 	public UserDTO updateRoleById(@PathVariable int id, @PathVariable String roleName) {
 		
-		User user = userService.findById(id);
-		Role role = roleService.findByRole(roleName);
-		
-		user.setRoles(new HashSet<>(Arrays.asList(role)));
-		userService.update(user);
+		User user = userService.updateRoleById(id, roleName);
 		
 		return dozerBeanMapper.map(user, UserDTO.class);
+		
 	}
 	
 	/*
@@ -149,7 +146,10 @@ public class UserRestController {
 	public UserDTO findUserById(@PathVariable int id) {
 		
 		User user = userService.findById(id);
-		return dozerBeanMapper.map(user, UserDTO.class);
+		UserDTO userDTO = dozerBeanMapper.map(user, UserDTO.class);
+		userDTO.setFullName(user.getFirstName()+" "+user.getLastName());
+		userDTO.setHandicapDTO(dozerBeanMapper.map(user.getHandicap(), HandicapDTO.class));
+		return userDTO;
 	}
 	
 	
