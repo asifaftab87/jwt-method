@@ -63,5 +63,10 @@ public class HandicapService {
 		
 		return handicapRepository.save(handicap);
 	}
+	
+	public void delete(Handicap handicap) {
+		
+		handicapRepository.delete(handicap);
+	}
 
 }

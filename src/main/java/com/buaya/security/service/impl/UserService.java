@@ -178,7 +178,23 @@ public class UserService {
 	}
 	
 	public void deleteById(long id) {
+
+		Optional<User> optional = userRepository.findById(id);
 		
-		userRepository.deleteById(id);
+		if(optional.isPresent()) {
+			
+			User user = optional.get();
+			
+			//to avoid problem of foreign constraint
+			user.setRoles(null);
+		
+			user = update(user);			//deleting relation of user with role
+			
+			Handicap handicap = handicapService.findByUserId(user.getId());
+			handicapService.delete(handicap);	
+			
+			userRepository.delete(user);
+		}
 	}
+	
 }

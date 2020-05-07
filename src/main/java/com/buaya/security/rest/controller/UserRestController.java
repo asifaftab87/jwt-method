@@ -170,6 +170,16 @@ public class UserRestController {
 	}
 	
 	
+	/*
+	 * Get user by user id
+	 */
+	@GetMapping(value = "/delete/id/{id}")
+	public void deleteById(@PathVariable int id) {
+		
+		userService.deleteById(id);
+		
+	}
+	
 }
 
 
