@@ -14,7 +14,7 @@ public class CustomUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = 4470072355315571719L;
 	
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final transient Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private String userName;
 	private String password;
@@ -27,9 +27,9 @@ public class CustomUserDetails implements UserDetails {
 		
 		this.userName = user.getEmail();
 		this.password = user.getPassword();
-		this.active = user.isActive();
-		log.info("roles: "+user.getRoles());
-		this.authorities = user.getRoles().stream().map(role->role.getRole()).map(String::valueOf).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+		this.active = user.getActive();
+		
+		this.authorities = user.getRoles().stream().map(Role::getRole).map(String::valueOf).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
 	
 	@Override

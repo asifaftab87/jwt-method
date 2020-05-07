@@ -36,10 +36,10 @@ public class CustomUserDetailsService implements UserDetailsService{
 	
     @Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		log.info("email username: "+email);
-		Optional<User> user = userRepository.findByEmail(email);
-		user.orElseThrow(() -> new UsernameNotFoundException("Not found: "+email));
-		return user.map(CustomUserDetails::new).get();
+		
+		Optional<User> userOptional = userRepository.findByEmail(email);
+		User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("Not found: "+email));
+		return new CustomUserDetails(user);
 	}
   
 	public User saveUser(User user, Set<Role> role) {
@@ -50,10 +50,12 @@ public class CustomUserDetailsService implements UserDetailsService{
     }
 	
 	public User addUser(User user, String roleName) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        //user.setActive(true);
-        Role role = roleRepository.findByRole(roleName);
+        
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        
+		Role role = roleRepository.findByRole(roleName);
         user.setRoles(new HashSet<>(Arrays.asList(role)));
+        
         return userRepository.save(user);
     }
 	

@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.buaya.security.dto.HandicapDTO;
@@ -16,7 +15,6 @@ import com.buaya.security.dto.UserDTO;
 import com.buaya.security.model.Handicap;
 import com.buaya.security.model.Role;
 import com.buaya.security.model.User;
-import com.buaya.security.repository.RoleRepository;
 import com.buaya.security.repository.UserRepository;
 import com.buaya.security.service.CustomUserDetailsService;
 
@@ -26,12 +24,6 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	@Autowired
-	private RoleRepository roleRepository;
-	
 	@Autowired
 	private HandicapService handicapService;
 	
@@ -73,16 +65,57 @@ public class UserService {
 		handicap.setUserId(user.getId());
 		handicap = handicapService.add(handicap);
 		user.setHandicap(handicap);
-		/*		
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(true);
-        Role role = roleRepository.findByRole(roleName);
-        user.setRoles(new HashSet<>(Arrays.asList(role)));
-        */
 		
 		return user;
     }
 	
+	public User editUser(UserDTO userDTO, String roleName) {
+		
+		int userId = userDTO.getId();
+		User user = findById(userId);
+		
+		user.setMembershipNum(userDTO.getMembershipNum());
+		
+		String fullName = userDTO.getFullName();
+		
+		int index = fullName.lastIndexOf(' ');
+		String lastName = fullName.substring(index + 1);
+		
+		
+		if(lastName.equalsIgnoreCase(userDTO.getLastName())) {
+			user.setFirstName(fullName.substring(0, index));
+		}
+		else {
+			user.setFirstName(fullName);
+		}
+		
+		String password = userDTO.getPasswordUser();
+		
+		if(password!=null) {
+			password = password.trim();
+			if(password.length()>0) {
+				user.setPassword(password);
+			}
+		}
+		
+		user.setLastName(userDTO.getLastName());
+		user.setDob(userDTO.getDob());
+		user.setEmail(userDTO.getEmail());
+		
+		user.setActive(userDTO.getActive());
+		
+		Handicap handicap = handicapService.findById(user.getHandicap().getId());
+		
+		handicap.setHandicapValue(userDTO.getHandicapDTO().getHandicapValue());
+		
+		handicapService.update(handicap);
+		
+		user = customUserDetailsService.addUser(user, roleName);
+		user.setHandicap(handicap);
+		
+		return user;
+    }
+
 	public User update(User user) {
 		return userRepository.save(user);
 	}

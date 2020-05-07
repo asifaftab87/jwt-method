@@ -9,6 +9,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dozer.DozerBeanMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,12 +44,24 @@ public class UserRestController {
 	@Autowired
 	private HandicapService handicapService;
 	
+	Logger log = LoggerFactory.getLogger(UserRestController.class);
+	
 	@PostMapping(value = "/admin/add/user")
 	public void add(@RequestBody UserDTO userDTO, HttpServletRequest request) {
 		
 		userService.addUser(userDTO, "USER");
+	}
+	
+	
+	@PostMapping(value = "/admin/edit/user/id/{userId}")
+	public UserDTO edit(@PathVariable int userId, @RequestBody UserDTO userDTO, HttpServletRequest request) {
 		
-		//customUserDetailsService.addUser(dozerBeanMapper.map(userDTO, User.class), "USER");
+		log.info("edit user {}", userDTO);
+		User user = userService.editUser(userDTO, "USER");
+		userDTO = dozerBeanMapper.map(user, UserDTO.class);
+		HandicapDTO handicapDTO = dozerBeanMapper.map(user.getHandicap(), HandicapDTO.class);
+		userDTO.setHandicapDTO(handicapDTO);
+		return userDTO;
 	}
 	
 	/*
@@ -61,19 +75,14 @@ public class UserRestController {
 		
 		User user = dozerBeanMapper.map(userDTO, User.class);
 		user.setPassword(userDTO.getPasswordGame());
-		//user = userService.addUser(user, "USER");
-		
 
-		if(user!=null) {
-			
-			userDTO = dozerBeanMapper.map(user, UserDTO.class);
-			
-			handicapDTO.setUserId(user.getId());
-			handicapDTO = handicapService.add(handicapDTO);
-			
-			if(handicapDTO!=null) {
-				userDTO.setHandicapDTO(handicapDTO);
-			}
+		userDTO = dozerBeanMapper.map(user, UserDTO.class);
+		
+		handicapDTO.setUserId(user.getId());
+		handicapDTO = handicapService.add(handicapDTO);
+		
+		if(handicapDTO!=null) {
+			userDTO.setHandicapDTO(handicapDTO);
 		}
 		
 		return userDTO;

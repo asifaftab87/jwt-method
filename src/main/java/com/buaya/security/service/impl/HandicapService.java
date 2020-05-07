@@ -25,7 +25,7 @@ public class HandicapService {
 	}
 
 	
-	public Handicap findById(int id) {
+	public Handicap findById(long id) {
 		
 		Optional<Handicap> optional = handicapRepository.findById(id);
 		
@@ -57,6 +57,11 @@ public class HandicapService {
 		}
 		
 		return null;
+	}
+	
+	public Handicap update(Handicap handicap) {
+		
+		return handicapRepository.save(handicap);
 	}
 
 }

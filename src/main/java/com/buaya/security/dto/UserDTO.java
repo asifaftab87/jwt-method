@@ -31,7 +31,7 @@ public class UserDTO implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public boolean isActive() {
+	public boolean getActive() {
 		return active;
 	}
 	public void setActive(boolean active) {
