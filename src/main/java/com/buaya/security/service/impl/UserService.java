@@ -139,7 +139,7 @@ public class UserService {
 	}
 	
 	
-	public User updateRoleById(int id, String roleName) {
+	public User updateRoleById(long id, String roleName) {
 		
 		Optional<User> optional = userRepository.findById(id);
 		
@@ -159,7 +159,7 @@ public class UserService {
 		return null;
 	}
 	
-	public User findById(int id) {
+	public User findById(long id) {
 		
 		Optional<User> optional = userRepository.findById(id);
 		
@@ -177,4 +177,8 @@ public class UserService {
 		return null;
 	}
 	
+	public void deleteById(long id) {
+		
+		userRepository.deleteById(id);
+	}
 }

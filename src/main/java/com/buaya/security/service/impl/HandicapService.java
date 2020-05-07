@@ -48,7 +48,7 @@ public class HandicapService {
 		return handicapRepository.save(handicap);
 	}
 	
-	public Handicap findByUserId(int userId) {
+	public Handicap findByUserId(long userId) {
 		
 		Optional<Handicap> optional = handicapRepository.findByUserId(userId);
 		

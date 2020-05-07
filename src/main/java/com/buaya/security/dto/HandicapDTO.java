@@ -8,7 +8,7 @@ public class HandicapDTO implements Serializable{
 
 	private long id;
 	
-	private int userId;
+	private long userId;
 	
 	private long handicapValue;
 	
@@ -21,11 +21,11 @@ public class HandicapDTO implements Serializable{
 		this.id = id;
 	}
 
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 
