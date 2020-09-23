@@ -1,5 +1,6 @@
 package com.buaya.security.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,8 @@ public class CustomUserDetails implements UserDetails {
 	private String userName;
 	private String password;
 	private boolean active;
-	private List<GrantedAuthority> authorities;
+//	private List<GrantedAuthority> authorities;
+	private List<GrantedAuthority> gAuth = new ArrayList<>();
 	
 	public CustomUserDetails() {}
 	
@@ -29,12 +31,20 @@ public class CustomUserDetails implements UserDetails {
 		this.password = user.getPassword();
 		this.active = user.getActive();
 		
-		this.authorities = user.getRoles().stream().map(Role::getRole).map(String::valueOf).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+		//this.authorities = user.getRoles().stream().map(Role::getRole).map(String::valueOf).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+		user.getRoles().forEach(role ->
+		{
+			gAuth.add(new SimpleGrantedAuthority(role.getRole()));
+		});
 	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
+		//return authorities;
+		 
+		
+		return gAuth;
+	
 	}
 
 	@Override

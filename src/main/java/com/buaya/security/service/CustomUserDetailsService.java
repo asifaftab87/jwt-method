@@ -2,12 +2,14 @@ package com.buaya.security.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,12 +36,14 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Autowired
 	private RoleRepository roleRepository;
 	
+
     @Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
 		Optional<User> userOptional = userRepository.findByEmail(email);
 		User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("Not found: "+email));
 		return new CustomUserDetails(user);
+		
 	}
   
 	public User saveUser(User user, Set<Role> role) {

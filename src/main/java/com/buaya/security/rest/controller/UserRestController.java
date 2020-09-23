@@ -12,6 +12,7 @@ import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,7 +93,9 @@ public class UserRestController {
 	/*
 	 * This will return all users
 	 */
+	
 	@GetMapping(value="/get/all")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public List<UserDTO> findAllUser(Principal principal) {	
 		
 		List<UserDTO> userDTOList = new ArrayList<>();	
@@ -107,8 +110,11 @@ public class UserRestController {
 	
 	/*
 	 * This will return all users except login user
+	 * 
 	 */
 	@GetMapping(value="/get/all/except/login")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+
 	public List<UserDTO> findAllUsersExceptGivenEmail(Principal principal) {	
 		
 		List<UserDTO> userDTOList = new ArrayList<>();	
