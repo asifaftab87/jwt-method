@@ -33,21 +33,6 @@ public class User implements Serializable{
 	@Column(name="active")
 	private boolean active;
 	
-	public User(User user) {
-		this.id = user.getId();
-		this.password = user.getPassword();
-		this.active = user.getActive();
-		this.email = user.getEmail();
-		this.firstName = user.getFirstName();
-		this.lastName = user.getLastName();
-		this.membershipNum = user.getMembershipNum();
-		this.contactNum = user.getContactNum();
-		this.dob = user.getDob();
-		this.status = user.getStatus();
-		this.roles = user.getRoles();
-		this.handicap = user.getHandicap();
-	}
-
 	@Column(name="email")
 	private String email;
 	
@@ -77,6 +62,21 @@ public class User implements Serializable{
 	private  Handicap handicap;
 	
 	public User() {}
+	
+	public User(User user) {
+		this.id = user.getId();
+		this.password = user.getPassword();
+		this.active = user.getActive();
+		this.email = user.getEmail();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.membershipNum = user.getMembershipNum();
+		this.contactNum = user.getContactNum();
+		this.dob = user.getDob();
+		this.status = user.getStatus();
+		this.roles = user.getRoles();
+		this.handicap = user.getHandicap();
+	}
 	
 	public long getId() {
 		return id;
